@@ -2,8 +2,10 @@
 
 ## With LuaRocks
 
+Clone the repo, then, from this directory :
+
 ```sh
-luarocks --from https://github.com/jperon/ltl install ltl
+luarocks make
 ```
 
 ## Manually

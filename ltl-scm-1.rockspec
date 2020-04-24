@@ -16,7 +16,8 @@ dependencies = {
    "moonscript"
 }
 build = {
-   type = "builtin",
+   type = "command",
+   build_command = "make",
    modules = {
       ltl = "ltl.lua"
    },
