@@ -72,9 +72,12 @@ copas.loop!
 
 out = args.i and assert(io.open(args.file, 'w'), "Can't write to #{args.file}") or io.stdout
 if ret
-  out\write(
-    type(ret) == 'table' and
-      table.concat(ret, '\n') .. (args.n and '' or '\n') or
-    type(ret) == 'number' and ret .. (args.n and '' or '\n') or
-      tostring(ret)\sub(1, args.n and -2 or -1)
-  )
+  switch type ret
+    when 'function'
+      out\write _r..'\n' for _r in ret
+    when 'table'
+      out\write table.concat(ret, '\n') .. (args.n and '' or '\n')
+    when 'number'
+      ret .. (args.n and '' or '\n')
+    else
+      out\write tostring(ret) .. (args.n and '' or '\n')

@@ -22,10 +22,14 @@ echo '#!/usr/bin/env lua[jit]' > ltl.lua && moonc -p ltl.moon >> ltl.lua && chmo
 
 # Usage
 
-`ltl` will read the file given as input (or stdin) if applicable, and write to
-stdout the result of the code given as argument. If this code returns a string,
-it will be output to stdout ; if it returns a table, it will be output to stdout
-line by line (with `tconcat(RESULT, '\n')`).
+`ltl` will write to stdout the result of the code given as argument.
+If this code returns a string, it will be output to stdout ;
+if it returns a table, it will be output to stdout line by line
+(with `tconcat(RESULT, '\n')`) ; if it returns a function (that *must*
+be an iterator), it will be iterated, and the result printed line by line.
+
+`ltl` may operate as a filter thanks to the special `IN` table (that wraps
+`io.stdin`), reading the file given as input (or stdin) if applicable.
 
 ## Arguments description
 
@@ -61,7 +65,7 @@ IN is a special table that represents stdin. It can be used :
 
 ## Examples
 
-Two ways to get the square root of numbers from 1 to 10 :
+Three ways to get the square root of numbers from 1 to 10 :
 
 ```sh
 $ seq 1 10 | ltl -m '[math.sqrt i for i in IN]'
@@ -69,6 +73,10 @@ $ seq 1 10 | ltl -m '[math.sqrt i for i in IN]'
 or
 ```sh
 $ ltl -m '[math.sqrt i for i = 1, 10]'
+```
+or (less ram, more cpu)
+```sh
+$ ltl -m 'wrap -> yield math.sqrt i for i = 1, 10'
 1
 1.4142135623731
 1.7320508075689
@@ -112,7 +120,7 @@ Ct((C(num^2) * maybe non(num)^1)^1)\match tostring IN
 Regex (`p` is a pretty-printing function from `moon`) :
 
 ```sh
-$ echo '13\nabc\n\n05' | ltl -m 'p {re.match "the number 423 is odd}", "({%a+} / .)*"'
+$ ltl -m 'p {re.match "the number 423 is odd}", "({%a+} / .)*"'
 {
     [1] = "the"
     [2] = "number"

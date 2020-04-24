@@ -1,8 +1,8 @@
 package = "ltl"
-version = "0.1-5"
+version = "0.1-6"
 source = {
    url = "git://github.com/jperon/ltl",
-   tag = "v0.1"
+   tag = "v0.1b"
 }
 description = {
    homepage = "https://github.com/jperon/ltl",
