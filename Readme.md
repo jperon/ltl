@@ -34,8 +34,7 @@ echo SOMETHING | ltl [-i] [-n] [--clean] "LUA CODE" [FILE]
 echo ANYTHINGELSE | ltl -m [-i] [--clean] "MOONSCRIPT CODE" [FILE]
 ```
 
-`-m` : use MoonScript instead of Lua. The same effect can be obtained by calling the
-script as `mtl` (either renaming it, or making a symlink to it).
+`-m` : use MoonScript instead of Lua.
 
 `-i` : in-place (like `sed`) ; only means something if `FILE` is defined.
 

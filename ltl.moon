@@ -1,7 +1,7 @@
 #!/usr/bin/env moon
 
-copas = require("copas")
-async = require("copas.async")
+copas = require"copas"
+async = require"copas.async"
 require"pl"
 parser = require"argparse" "ltl", "LuaTooL - lua/moonscript for shell"
 parser\argument "code", "Code to execute"
@@ -22,14 +22,16 @@ export IN, MOONSCRIPT_HEADER, r, re, create, resume, status, wrap, yield, concat
 if not args.clean
   re = require"re"
   r = (...) -> require ...
-  MOONSCRIPT_HEADER = "r = (...) -> require ...\nr'moon.all'\n"
+  MOONSCRIPT_HEADER = "r'moon.all'\n"
 
 do
   local _fn, _stdin
   if args.file
-    f = assert io.open(args.file), "Can't read from #{args.file}"
-    _fn = -> f\read"*a"
-    f\close!
+    _fn = ->
+      f = assert io.open(args.file), "Can't read from #{args.file}"
+      _r = f\read"*a"
+      f\close!
+      _r
   else
     _fn = -> io.stdin\read"*a"
   _mt = getmetatable(_G or _ENV)
