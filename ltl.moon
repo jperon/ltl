@@ -2,7 +2,6 @@
 
 copas = require"copas"
 async = require"copas.async"
-require"pl"
 parser = require"argparse" "ltl", "LuaTooL - lua/moonscript for shell"
 parser\argument "code", "Code to execute"
 parser\argument("file", "File to read from (or - for stdin)")\args"?"
@@ -34,7 +33,7 @@ do
       _r
   else
     _fn = -> io.stdin\read"*a"
-  _mt = getmetatable(_G or _ENV)
+  _mt = getmetatable(_G) or {}
   _oldindex = _mt.__index
   _mt.__index = (idx) =>
     if idx == 'IN'
@@ -57,7 +56,8 @@ do
     else
       for t in *{coroutine, table, require"lpeg"}
         return t[idx] if t[idx]
-    _oldindex! if _oldindex
+    _oldindex self, idx if _oldindex
+  setmetatable(_G, _mt)
 
   
 
