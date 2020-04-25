@@ -8,10 +8,12 @@ parser\argument("file", "File to read from (or - for stdin)")\args"?"
 parser\flag "-i", "In-place editing"
 parser\flag "-n", "No newline at end"
 parser\flag "-m --moonscript"
+parser\flag "-d --debug"
 parser\flag "--clean"
 args = parser\parse!
 assert(args.file, "In-place on which file ?") if args.i
 _moonscript = args.moonscript or arg[0]\sub(-3) == 'mtl'
+_dbg = (...) -> args.debug and io.stderr\write ...
 
 loadstring or= load
 unpack or= table.unpack
@@ -71,13 +73,14 @@ copas.addthread -> ret = ret!
 copas.loop!
 
 out = args.i and assert(io.open(args.file, 'w'), "Can't write to #{args.file}") or io.stdout
+_dbg type ret, ret
 if ret
   switch type ret
     when 'function'
       out\write _r..'\n' for _r in ret
     when 'table'
       out\write table.concat(ret, '\n') .. (args.n and '' or '\n')
-    when 'number'
-      ret .. (args.n and '' or '\n')
+    when 'number' or 'string'
+      out\write ret .. (args.n and '' or '\n')
     else
       out\write tostring(ret) .. (args.n and '' or '\n')
