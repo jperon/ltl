@@ -1,9 +1,9 @@
 export package, version, source, description, dependencies, build
 package = "ltl"
-version = "0.1-6"
+version = "0.2-1"
 source =
    url: "git://github.com/jperon/ltl"
-   tag: "v0.1b"
+   tag: "v0.2"
 description =
    homepage: "https://github.com/jperon/ltl"
    license: "MIT"

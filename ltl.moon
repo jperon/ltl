@@ -18,6 +18,7 @@ _dbg = (...) -> args.debug and io.stderr\write ...
 loadstring or= load
 unpack or= table.unpack
 
+math.randomseed(os.time())
 
 export IN, MOONSCRIPT_HEADER, r, re, create, resume, status, wrap, yield, concat, insert, pack, remove, sort
 if not args.clean
@@ -56,7 +57,7 @@ do
       IN[i], i = l, i + 1 for l in IN\gmatch"[^\n]+"
       return IN
     else
-      for t in *{coroutine, table, require"lpeg"}
+      for t in *{coroutine, table, math, require"lpeg"}
         return t[idx] if t[idx]
     _oldindex self, idx if _oldindex
   setmetatable(_G, _mt)

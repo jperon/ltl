@@ -44,7 +44,7 @@ echo ANYTHINGELSE | ltl -m [-i] [--clean] "MOONSCRIPT CODE" [FILE]
 
 `-n` : don't add newline at end (like `echo`)
 
-`--clean` : By default, properties of `lpeg`, `coroutine`, `table`
+`--clean` : By default, properties of `lpeg`, `coroutine`, `table`, `math`
 (and `moon` for moonscript) are injected in the metatable index of the global environment,
 for convenience in a shell context ; `re` is imported.
 Moreover, a special proxy table is created, named `IN` (see below).
