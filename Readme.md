@@ -61,7 +61,7 @@ IN is a special table that represents stdin. It can be used :
 
 - by calling it, as an iterator over *lines* : `for l in IN` is an equivalent of `for l in io.stdin:lines()` ;
 - by indexing it, as a table of *lines* : `IN[2]` is the 2nd line ;
-- by invoking a string method on it, as a string : `ltl "print(IN)"` will output the content of stdin, `ltl -m '"--"..IN.."--"'` will output the content of stdin with all "a" replaced by "b".
+- by invoking a string method on it, as a string : `ltl "print(IN)"` will output the content of stdin, `ltl -m 'IN\gsub "a", "b"'` will output the content of stdin with all "a" replaced by "b".
 
 ## Examples
 
