@@ -1,7 +1,5 @@
 #!/usr/bin/env moon
 
-copas = require"copas"
-async = require"copas.async"
 parser = require"argparse" "ltl", "LuaTooL - lua/moonscript for shell"
 parser\argument "code", "Code to execute"
 parser\argument("file", "File to read from (or - for stdin)")\args"?"
@@ -52,7 +50,7 @@ do
         _stdin or= _fn!
         _stdin
       }
-      setmetatable(IN, IN)
+      setmetatable IN, IN
       i = 1
       IN[i], i = l, i + 1 for l in IN\gmatch"[^\n]+"
       return IN
@@ -60,7 +58,7 @@ do
       for t in *{coroutine, table, math, require"lpeg"}
         return t[idx] if t[idx]
     _oldindex self, idx if _oldindex
-  setmetatable(_G, _mt)
+  setmetatable _G, _mt
 
   
 
@@ -68,10 +66,9 @@ _code = args.code
 if _moonscript
   _code = assert require"moonscript.base".to_lua MOONSCRIPT_HEADER.._code
 
-ret, err = loadstring(_code)
-assert(ret, err)
-copas.addthread -> ret = ret!
-copas.loop!
+ret, err = loadstring _code
+assert ret, err
+ret = ret!
 
 out = args.i and assert(io.open(args.file, 'w'), "Can't write to #{args.file}") or io.stdout
 _dbg type ret, ret
