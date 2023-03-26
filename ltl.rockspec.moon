@@ -1,15 +1,15 @@
 export package, version, source, description, dependencies, build
 package = "ltl"
-version = "0.5-0"
+version = "0.5-1"
 source =
    url: "git://github.com/jperon/ltl"
-   tag: "v0.5"
+   tag: "v0.5-1"
 description =
    homepage: "https://github.com/jperon/ltl"
    license: "MIT"
 dependencies = {
    "lua >= 5.1", "moonscript"
-   "argparse", "fun", "lpeg"
+   "argparse", "lpeg"
 }
 build =
    type: "command"
