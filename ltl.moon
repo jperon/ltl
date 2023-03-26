@@ -13,10 +13,12 @@ assert(args.file, "In-place on which file ?") if args.i
 _moonscript = args.moonscript or arg[0]\sub(-3) == 'mtl'
 _dbg = (...) -> args.debug and io.stderr\write ...
 
+ok, fun = pcall require, "fun"
+fun! if ok
 loadstring or= load
 unpack or= table.unpack
 
-math.randomseed(os.time())
+math.randomseed os.time!
 
 export IN, MOONSCRIPT_HEADER, r, re, create, resume, status, wrap, yield, concat, insert, pack, remove, sort
 if not args.clean
@@ -40,9 +42,9 @@ do
     if idx == 'IN'
       IN = {
       __index: (i) =>
-        str = tostring(self)
+        str = tostring @
         ret = str[i]
-        ret if type(ret) ~= 'function' else (...) => ret(str, ...)
+        ret if type(ret) ~= 'function' else (...) => ret str, ...
       __call: coroutine.wrap =>
         yield or= coroutine.yield
         yield l for l in @gmatch"[^\n]+"
@@ -52,15 +54,13 @@ do
       }
       setmetatable IN, IN
       i = 1
-      IN[i], i = l, i + 1 for l in IN\gmatch"[^\n]+"
+      IN[i], i = l, i + 1 for l in IN\gsub("\n$", "")\gmatch"([^\n]*)\n?"
       return IN
     else
       for t in *{coroutine, table, math, require"lpeg"}
         return t[idx] if t[idx]
-    _oldindex self, idx if _oldindex
+    _oldindex @, idx if _oldindex
   setmetatable _G, _mt
-
-  
 
 _code = args.code
 if _moonscript
@@ -75,10 +75,11 @@ _dbg type ret, ret
 if ret
   switch type ret
     when 'function'
-      out\write _r..'\n' for _r in ret
+      out\write"#{_r}\n" for _r in ret
     when 'table'
-      out\write table.concat(ret, '\n') .. (args.n and '' or '\n')
-    when 'number' or 'string'
-      out\write ret .. (args.n and '' or '\n')
+      if ret.param
+        ret\each => out\write"#{@}\n"
+      else
+        out\write"#{table.concat ret, '\n'}#{args.n and '' or '\n'}"
     else
-      out\write tostring(ret) .. (args.n and '' or '\n')
+      out\write"#{ret}#{args.n and '' or '\n'}"
